@@ -50,5 +50,13 @@ data Digit = DZero
            | DNine
 
 
+{- UNIVERSAL CHARACTER NAMES -}
+{- 6.4.3 -}
+data UnivCharName = UnivCharName1 HexQuad
+                  | UnivCharName2 HexQuad HexQuad
+
+data HexQuad = HexQuad HexDigit HexDigit HexDigit HexDigit
+
+
 -- TODO
-data UnivCharName
+data HexDigit
