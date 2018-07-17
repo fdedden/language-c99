@@ -68,8 +68,12 @@ instance Pretty Digit where
 {- UNIVERSAL CHARACTER NAMES -}
 {- 6.4.3 -}
 instance Pretty UnivCharName where
+  pretty (UnivCharName1 hq     ) = text "\\u" <> pretty hq
+  pretty (UnivCharName2 hq1 hq2) = text "\\U" <> pretty hq1 <> pretty hq2
 
 instance Pretty HexQuad where
+  pretty (HexQuad hd1 hd2 hd3 hd4) =  pretty hd1 <> pretty hd2
+                                   <> pretty hd3 <> pretty hd4
 
 
 {- CONSTANTS -}
