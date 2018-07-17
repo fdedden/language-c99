@@ -198,3 +198,14 @@ data OcEscSeq = OcEsc1 OcDigit
 data HexEscSeq = HexEscBase           HexDigit
                | HexEscCons HexEscSeq HexDigit
 
+
+{- STRING LITERALS -}
+{- 6.4.5 -}
+data StringLit = StringLit  (Maybe SCharSeq)
+               | StringLitL (Maybe SCharSeq)
+
+data SCharSeq = SCharBase          SChar
+              | SCharCons SCharSeq SChar
+
+data SChar = SChar    Char    -- We are a bit lenient here
+           | SCharEsc EscSeq
