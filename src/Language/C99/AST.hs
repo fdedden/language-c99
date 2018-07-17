@@ -510,3 +510,17 @@ data JumpStmt = JumpGoto     Ident
               | JumpContinue
               | JumpBreak
               | JumpReturn   (Maybe Expr)
+
+{- EXTERNAL DEFINITIONS -}
+{- 6.9 -}
+data TransUnit = TransUnitBase           ExtDecln
+               | TransUnitCons TransUnit ExtDecln
+
+data ExtDecln = ExtFun   FunDef
+              | ExtDecln Decln
+
+{- 6.9.1 -}
+data FunDef = FunDef DeclnSpecs Declr (Maybe DeclnList) CompoundStmt
+
+data DeclnList = DeclnBase           Decln
+               | DeclnCons DeclnList Decln
