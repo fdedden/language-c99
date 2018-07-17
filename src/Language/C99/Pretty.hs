@@ -13,12 +13,56 @@ class Pretty a where
 {- IDENTIFIERS -}
 {- 6.4.2.1 -}
 instance Pretty Ident where
+  pretty (IdentBase           idn) = pretty idn
+  pretty (IdentConsNonDigit i idn) = pretty i <> pretty idn
+  pretty (IdentCons         i d  ) = pretty i <> pretty d
 
 instance Pretty IdentNonDigit where
+  pretty (IdentNonDigit     nd ) = pretty nd
+  pretty (IdentNonDigitUniv ucn) = pretty ucn
 
 instance Pretty NonDigit where
+  pretty c = case c of
+    NDUnderscore -> char '_'
+    NDa -> char 'a' ;      NDA -> char 'A'
+    NDb -> char 'b' ;      NDB -> char 'B'
+    NDc -> char 'c' ;      NDC -> char 'C'
+    NDd -> char 'd' ;      NDD -> char 'D'
+    NDe -> char 'e' ;      NDE -> char 'E'
+    NDf -> char 'f' ;      NDF -> char 'F'
+    NDg -> char 'g' ;      NDG -> char 'G'
+    NDh -> char 'h' ;      NDH -> char 'H'
+    NDi -> char 'i' ;      NDI -> char 'J'
+    NDj -> char 'j' ;      NDJ -> char 'I'
+    NDk -> char 'k' ;      NDK -> char 'K'
+    NDl -> char 'l' ;      NDL -> char 'L'
+    NDm -> char 'm' ;      NDM -> char 'M'
+    NDn -> char 'n' ;      NDN -> char 'N'
+    NDo -> char 'o' ;      NDO -> char 'O'
+    NDp -> char 'p' ;      NDP -> char 'P'
+    NDq -> char 'q' ;      NDQ -> char 'Q'
+    NDr -> char 'r' ;      NDR -> char 'R'
+    NDs -> char 's' ;      NDS -> char 'S'
+    NDt -> char 't' ;      NDT -> char 'T'
+    NDu -> char 'u' ;      NDU -> char 'U'
+    NDv -> char 'v' ;      NDV -> char 'V'
+    NDw -> char 'w' ;      NDW -> char 'W'
+    NDx -> char 'x' ;      NDX -> char 'X'
+    NDy -> char 'y' ;      NDY -> char 'Y'
+    NDz -> char 'z' ;      NDZ -> char 'Z'
 
 instance Pretty Digit where
+  pretty c = case c of
+    DZero  -> int 0
+    DOne   -> int 1
+    DTwo   -> int 2
+    DThree -> int 3
+    DFour  -> int 4
+    DFive  -> int 5
+    DSix   -> int 6
+    DSeven -> int 7
+    DEight -> int 8
+    DNine  -> int 9
 
 
 {- UNIVERSAL CHARACTER NAMES -}
