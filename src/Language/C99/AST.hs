@@ -466,3 +466,47 @@ data DesigrList = DesigrBase            Desigr
 
 data Desigr = DesigrConst ConstExpr
             | DesigrIdent Ident
+
+
+{- STATEMENTS -}
+{- 6.8 -}
+data Stmt = StmtLabeled LabeledStmt
+          | StmtCompund CompoundStmt
+          | StmtExpr    ExprStmt
+          | StmtSelect  SelectStmt
+          | StmtIter    IterStmt
+          | StmtJump    JumpStmt
+
+{- 6.8.1 -}
+data LabeledStmt = LabeledIdent   Ident     Stmt
+                 | LabeledCase    ConstExpr Stmt
+                 | LabeledDefault Stmt
+
+{- 6.8.2 -}
+data CompoundStmt = Compound (Maybe BlockItemList)
+
+data BlockItemList = BlockItemBase               BlockItem
+                   | BlockItemCons BlockItemList BlockItem
+
+data BlockItem = BlockItemDecln Decln
+               | BlockItemStmt  Stmt
+
+{- 6.8.3 -}
+data ExprStmt = ExprStmt (Maybe Expr)
+
+{- 6.8.4 -}
+data SelectStmt = SelectIf     Expr Stmt
+                | SelectIfElse Expr Stmt Stmt
+                | SelectSwitch Expr Stmt
+
+{- 6.8.5 -}
+data IterStmt = IterWhile Expr Stmt
+              | IterDo Stmt Expr
+              | IterForUpdate (Maybe Expr) (Maybe Expr) (Maybe Expr) Stmt
+              | IterFor       Decln        (Maybe Expr) (Maybe Expr) Stmt
+
+{- 6.8.6 -}
+data JumpStmt = JumpGoto     Ident
+              | JumpContinue
+              | JumpBreak
+              | JumpReturn   (Maybe Expr)
