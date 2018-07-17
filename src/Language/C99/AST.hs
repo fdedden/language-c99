@@ -326,6 +326,143 @@ data Expr = ExprAssign      AssignExpr
 data ConstExpr = Const CondExpr
 
 
--- TODO
-data TypeName
-data InitList
+{- DECLARATIONS -}
+{- 6.7 -}
+data Decln = Decln DeclnSpecs (Maybe InitDeclrList)
+
+data DeclnSpecs = DeclnSpecsStorage StorageClassSpec (Maybe DeclnSpecs)
+                | DeclnSpecsType    TypeSpec         (Maybe DeclnSpecs)
+                | DeclnSpecsQual    TypeQual         (Maybe DeclnSpecs)
+                | DeclnSpecsFun     FunSpec          (Maybe DeclnSpecs)
+
+data InitDeclrList = InitDeclrBase               InitDeclr
+                   | InitDeclrCons InitDeclrList InitDeclr
+
+data InitDeclr = InitDeclr            Declr
+               | InitDeclrInitr Declr Init
+
+{- 6.7.1 -}
+data StorageClassSpec = StorageTypedef
+                      | StorageExtern
+                      | StorageStatic
+                      | StorageAuto
+                      | StorageRegister
+
+{- 6.7.2 -}
+data TypeSpec = TypeVoid
+              | TypeChar
+              | TypeShort
+              | TypeInt
+              | TypeLong
+              | TypeFloat
+              | TypeDouble
+              | TypeSigned
+              | TypeUnsigned
+              | TypeBool
+              | TypeComplex
+              | TypeStructUnion StructOrUnionSpec
+              | TypeEnum        EnumSpec
+              | TypeTypedef     TypedefName
+
+{- 6.7.2.1 -}
+data StructOrUnionSpec
+  = StructOrUnionDecln     StructOrUnion (Maybe Ident) StructDeclnList
+  | StructOrUnionForwDecln StructOrUnion Ident
+
+data StructOrUnion = Struct
+                   | Union
+
+data StructDeclnList = StructDeclnBase                 StructDecln
+                     | StructDeclnCons StructDeclnList StructDecln
+
+data StructDecln = StructDecln SpecQualList StructDeclrList
+
+data SpecQualList = SpecQualType TypeSpec (Maybe SpecQualList)
+                  | SpecQualQual TypeQual (Maybe SpecQualList)
+
+data StructDeclrList = StructDeclrBase                 StructDeclr
+                     | StructDeclrCons StructDeclrList StructDeclr
+
+data StructDeclr = StructDeclr    Declr
+                 | StructDeclrBit (Maybe Declr) ConstExpr
+
+{- 6.7.2.2 -}
+data EnumSpec = EnumSpec (Maybe Ident) EnumrList
+              | EnumSpecForw Ident
+
+data EnumrList = EnumrBase           Enumr
+               | EnumrCons EnumrList Enumr
+
+data Enumr = Enumr     EnumConst
+           | EnumrInit EnumConst ConstExpr
+
+{- 6.7.3 -}
+data TypeQual = QualConst
+              | QualRestrict
+              | QualVolatile
+
+{- 6.7.4 -}
+data FunSpec = SpecInline
+
+{- 6.7.5 -}
+data Declr = Declr (Maybe Ptr) DirectDeclr
+
+data DirectDeclr
+  = DirectDeclrIdent  Ident
+  | DirectDeclrDeclr  Declr
+  | DirectDeclrArray1 DirectDeclr (Maybe TypeQualList) (Maybe AssignExpr)
+  | DirectDeclrArray2 DirectDeclr (Maybe TypeQualList) AssignExpr
+  | DirectDeclrArray3 DirectDeclr TypeQualList AssignExpr
+  | DirectDeclrArray4 DirectDeclr (Maybe TypeQualList)
+  | DirectDeclrFun1   DirectDeclr ParamTypeList
+  | DirectDeclrFun2   DirectDeclr (Maybe IdentList)
+
+data Ptr = PtrBase (Maybe TypeQualList)
+         | PtrCons (Maybe TypeQualList) Ptr
+
+data TypeQualList = TypeQualBase              TypeQual
+                  | TypeQualCons TypeQualList TypeQual
+
+data ParamTypeList = ParamTypeList    ParamList
+                   | ParamTypeListVar ParamList
+
+data ParamList = ParamBase           ParamDecln
+               | ParamCons ParamList ParamDecln
+
+data ParamDecln = ParamDecln         DeclnSpecs Declr
+                | ParamDeclnAbstract DeclnSpecs (Maybe DirectAbstractDeclr)
+
+data IdentList = IdentListBase           Ident
+               | IdentListCons IdentList Ident
+
+{- 6.7.6 -}
+data TypeName = TypeName SpecQualList (Maybe DirectAbstractDeclr)
+
+data DirectAbstractDeclr
+  = AbstractDeclr       DirectAbstractDeclr
+  | AbstractDeclrArray1
+      (Maybe DirectAbstractDeclr) (Maybe TypeQualList) (Maybe AssignExpr)
+  | AbstractDeclrArray2
+      (Maybe DirectAbstractDeclr) (Maybe TypeQualList) AssignExpr
+  | AbstractDeclrArray3 (Maybe DirectAbstractDeclr) TypeQualList AssignExpr
+  | AbstractDeclrArray4 (Maybe DirectAbstractDeclr)
+  | AbstractDeclrFun    (Maybe DirectAbstractDeclr) (Maybe ParamTypeList)
+
+{- 6.7.7 -}
+data TypedefName = TypedefName Ident
+
+{- 6.7.8 -}
+data Init = InitExpr  AssignExpr
+          | InitArray InitList
+          -- We omit the specific case of InitArray ending with ,
+
+data InitList = InitBase          (Maybe Design) Init
+              | InitCons InitList (Maybe Design) Init
+
+data Design = Design DesigrList
+
+data DesigrList = DesigrBase            Desigr
+                | DesigrCons DesigrList Desigr
+
+data Desigr = DesigrConst ConstExpr
+            | DesigrIdent Ident
