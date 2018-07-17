@@ -209,3 +209,123 @@ data SCharSeq = SCharBase          SChar
 
 data SChar = SChar    Char    -- We are a bit lenient here
            | SCharEsc EscSeq
+
+
+{- EXPRESSIONS -}
+{- 6.5.1 -}
+data PrimExpr = PrimIdent  Ident
+              | PrimConst  Const
+              | PrimString StringLit
+              | PrimExpr   Expr
+
+{- 6.5.2 -}
+data PostfixExpr = PostfixPrim      PrimExpr
+                 | PostfixIndex     PostfixExpr Expr
+                 | PostfixFunction  PostfixExpr (Maybe ArgExprList)
+                 | PostfixDot       PostfixExpr Ident
+                 | PostfixArrow     PostfixExpr Ident
+                 | PostfixInc       PostfixExpr
+                 | PostfixDec       PostfixExpr
+                 | PostfixInits     TypeName    InitList
+
+data ArgExprList = ArgExprListBase AssignExpr
+                 | ArgExprListCons ArgExprList AssignExpr
+
+{- 6.5.3 -}
+data UnaryExpr = UnaryPostfix   PostfixExpr
+               | UnaryInc       UnaryExpr
+               | UnaryDec       UnaryExpr
+               | UnaryOp        UnaryOp   CastExpr
+               | UnarySizeExpr  UnaryExpr
+               | UnarySizeType  TypeName
+
+data UnaryOp = OpRef
+             | OpDeref
+             | OpPlus
+             | OpMin
+             | OpBNot
+             | OpNot
+
+{- 6.5.4 -}
+data CastExpr = CastUnary UnaryExpr
+              | Cast      TypeName CastExpr
+
+{- 6.5.5 -}
+data MultExpr = MultCast           CastExpr
+              | MultMult MultExpr  CastExpr
+              | MultDiv  MultExpr  CastExpr
+              | MultMod  MultExpr  CastExpr
+
+{- 6.5.6 -}
+data AddExpr = AddMult         MultExpr
+             | AddPlus AddExpr MultExpr
+             | AddMin  AddExpr MultExpr
+
+{- 6.5.7 -}
+data ShiftExpr = ShiftAdd             AddExpr
+               | ShiftLeft  ShiftExpr AddExpr
+               | ShiftRight ShiftExpr AddExpr
+
+{- 6.5.8 -}
+data RelExpr = RelShift         ShiftExpr
+             | RelLT    RelExpr ShiftExpr
+             | RelGT    RelExpr ShiftExpr
+             | RelLE    RelExpr ShiftExpr
+             | RelGE    RelExpr ShiftExpr
+
+{- 6.5.9 -}
+data EqExpr = EqRel        RelExpr
+            | EqEq  EqExpr RelExpr
+            | EqNEq EqExpr RelExpr
+
+{- 6.5.10 -}
+data AndExpr = AndEq          EqExpr
+             | And    AndExpr EqExpr
+
+{- 6.5.11 -}
+data XOrExpr = XOrAnd         AndExpr
+             | XOr    XOrExpr AndExpr
+
+{- 6.5.12 -}
+data OrExpr = OrXOr        XOrExpr
+            | Or    OrExpr XOrExpr
+
+{- 6.5.13 -}
+data LAndExpr = LAndOr          OrExpr
+              | LAnd   LAndExpr OrExpr
+
+{- 6.5.14 -}
+data LOrExpr = LOrAnd         LAndExpr
+             | LOr    LOrExpr LAndExpr
+
+{- 6.5.15 -}
+data CondExpr = CondLOr LOrExpr
+              | Cond Expr CondExpr
+
+{- 6.5.16 -}
+data AssignExpr = AssignCond CondExpr
+                | Assign UnaryExpr AssignOp AssignExpr
+
+data AssignOp = AssignEq
+              | AssignTimes
+              | AssignDiv
+              | AssignMod
+              | AssignAdd
+              | AssignSub
+              | AssignShiftL
+              | AssignShiftR
+              | AssignAnd
+              | AssignXOr
+              | AssignOr
+
+{- 6.5.17 -}
+data Expr = ExprAssign      AssignExpr
+          | Expr       Expr AssignExpr
+
+{- 6.6 -}
+data ConstExpr = Const CondExpr
+
+
+-- TODO
+data TypeName
+data InitList
