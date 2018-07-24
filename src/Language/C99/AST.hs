@@ -360,9 +360,9 @@ data TypeSpec = TVoid
               | TUnsigned
               | TBool
               | TComplex
-              | TStructUnion StructOrUnionSpec
-              | TEnum        EnumSpec
-              | TTypedef     TypedefName
+              | TStructOrUnion StructOrUnionSpec
+              | TEnum          EnumSpec
+              | TTypedef       TypedefName
 
 {- 6.7.2.1 -}
 data StructOrUnionSpec
