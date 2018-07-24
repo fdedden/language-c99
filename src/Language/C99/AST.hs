@@ -70,7 +70,7 @@ data IntConst = IntDec DecConst (Maybe IntSuffix)
               | IntOc  OcConst  (Maybe IntSuffix)
               | IntHex HexConst (Maybe IntSuffix)
 
-data DecConst = DecBase NonzeroDigit
+data DecConst = DecBase NonZeroDigit
               | DecCons DecConst Digit
 
 data OcConst = OcO
@@ -81,15 +81,15 @@ data HexConst = HexBase HexPrefix HexDigit
 
 data HexPrefix = OX
 
-data NonzeroDigit = NonzeroOne
-                  | NonzeroTwo
-                  | NonzeroThree
-                  | NonzeroFour
-                  | NonzeroFive
-                  | NonzeroSix
-                  | NonzeroSeven
-                  | NonzeroEight
-                  | NonzeroNine
+data NonZeroDigit = NZOne
+                  | NZTwo
+                  | NZThree
+                  | NZFour
+                  | NZFive
+                  | NZSix
+                  | NZSeven
+                  | NZEight
+                  | NZNine
 
 data OcDigit = OcZero
              | OcOne
@@ -144,8 +144,8 @@ data FracConst = FracZero (Maybe DigitSeq) DigitSeq
 
 data ExpPart = E (Maybe Sign) DigitSeq
 
-data Sign = SignPlus
-          | SignMinus
+data Sign = SPlus
+          | SMinus
 
 data DigitSeq = DigitBase          Digit
               | DigitCons DigitSeq Digit
@@ -179,17 +179,17 @@ data EscSeq = EscSimple SimpleEscSeq
             | EscHex    HexEscSeq
             | EscUniv   UnivCharName
 
-data SimpleEscSeq = SimpleEscQuote
-                  | SimpleEscDQuote
-                  | SimpleEscQuestion
-                  | SimpleEscBackSlash
-                  | SimpleEsca
-                  | SimpleEscb
-                  | SimpleEscf
-                  | SimpleEscn
-                  | SimpleEscr
-                  | SimpleEsct
-                  | SimpleEscv
+data SimpleEscSeq = SEQuote
+                  | SEDQuote
+                  | SEQuestion
+                  | SEBackSlash
+                  | SEa
+                  | SEb
+                  | SEf
+                  | SEn
+                  | SEr
+                  | SEt
+                  | SEv
 
 data OcEscSeq = OcEsc1 OcDigit
               | OcEsc2 OcDigit OcDigit
@@ -239,12 +239,12 @@ data UnaryExpr = UnaryPostfix   PostfixExpr
                | UnarySizeExpr  UnaryExpr
                | UnarySizeType  TypeName
 
-data UnaryOp = OpRef
-             | OpDeref
-             | OpPlus
-             | OpMin
-             | OpBNot
-             | OpNot
+data UnaryOp = UORef
+             | UODeref
+             | UOPlus
+             | UOMin
+             | UOBNot
+             | UONot
 
 {- 6.5.4 -}
 data CastExpr = CastUnary UnaryExpr
@@ -306,17 +306,17 @@ data CondExpr = CondLOr LOrExpr
 data AssignExpr = AssignCond CondExpr
                 | Assign UnaryExpr AssignOp AssignExpr
 
-data AssignOp = AssignEq
-              | AssignTimes
-              | AssignDiv
-              | AssignMod
-              | AssignAdd
-              | AssignSub
-              | AssignShiftL
-              | AssignShiftR
-              | AssignAnd
-              | AssignXOr
-              | AssignOr
+data AssignOp = AEq
+              | ATimes
+              | ADiv
+              | AMod
+              | AAdd
+              | ASub
+              | AShiftL
+              | AShiftR
+              | AAnd
+              | AXOr
+              | AOr
 
 {- 6.5.17 -}
 data Expr = ExprAssign      AssignExpr
@@ -342,27 +342,27 @@ data InitDeclr = InitDeclr            Declr
                | InitDeclrInitr Declr Init
 
 {- 6.7.1 -}
-data StorageClassSpec = StorageTypedef
-                      | StorageExtern
-                      | StorageStatic
-                      | StorageAuto
-                      | StorageRegister
+data StorageClassSpec = STypedef
+                      | SExtern
+                      | SStatic
+                      | SAuto
+                      | SRegister
 
 {- 6.7.2 -}
-data TypeSpec = TypeVoid
-              | TypeChar
-              | TypeShort
-              | TypeInt
-              | TypeLong
-              | TypeFloat
-              | TypeDouble
-              | TypeSigned
-              | TypeUnsigned
-              | TypeBool
-              | TypeComplex
-              | TypeStructUnion StructOrUnionSpec
-              | TypeEnum        EnumSpec
-              | TypeTypedef     TypedefName
+data TypeSpec = TVoid
+              | TChar
+              | TShort
+              | TInt
+              | TLong
+              | TFloat
+              | TDouble
+              | TSigned
+              | TUnsigned
+              | TBool
+              | TComplex
+              | TStructUnion StructOrUnionSpec
+              | TEnum        EnumSpec
+              | TTypedef     TypedefName
 
 {- 6.7.2.1 -}
 data StructOrUnionSpec
@@ -397,9 +397,9 @@ data Enumr = Enumr     EnumConst
            | EnumrInit EnumConst ConstExpr
 
 {- 6.7.3 -}
-data TypeQual = QualConst
-              | QualRestrict
-              | QualVolatile
+data TypeQual = QConst
+              | QRestrict
+              | QVolatile
 
 {- 6.7.4 -}
 data FunSpec = SpecInline
