@@ -14,7 +14,6 @@ data PreprocToken = PreprocHeader HeaderName
                   | PreprocNoneWhite
 
 -- TODO
-data HeaderName
 data PPNumber
 
 
@@ -274,6 +273,22 @@ data Punc = PuncSquareL         | PuncSquareR
           | PuncDiBraceL        | PuncDiBraceR
           | PuncDiHash
           | PuncDiDoubleHash
+
+
+{- HEADER NAMES -}
+{- 6.4.7 -}
+data HeaderName = HeaderGlobal HCharSeq
+                | HeaderLocal  QCharSeq
+
+data HCharSeq = HCharBase          HChar
+              | HCharCons HCharSeq HChar
+
+data HChar = HChar Char
+
+data QCharSeq = QCharBase          QChar
+              | QCharCons QCharSeq QChar
+
+data QChar = QChar Char
 
 
 {- EXPRESSIONS -}
