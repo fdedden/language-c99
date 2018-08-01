@@ -13,9 +13,6 @@ data PreprocToken = PreprocHeader HeaderName
                   | PreprocPunc   Punc
                   | PreprocNoneWhite
 
--- TODO
-data PPNumber
-
 
 {- IDENTIFIERS -}
 {- 6.4.2.1 -}
@@ -289,6 +286,19 @@ data QCharSeq = QCharBase          QChar
               | QCharCons QCharSeq QChar
 
 data QChar = QChar Char
+
+
+{- PREPROCESSING NUMBERS -}
+{- 6.4.8 -}
+data PPNumber = PPDigit           Digit
+              | PPDec             Digit
+              | PPNum   PPNumber  Digit
+              | PPIdent PPNumber  IdentNonDigit
+              | PPe     PPNumber  Sign
+              | PPE     PPNumber  Sign
+              | PPp     PPNumber  Sign
+              | PPP     PPNumber  Sign
+              | PPDot   PPNumber
 
 
 {- EXPRESSIONS -}
