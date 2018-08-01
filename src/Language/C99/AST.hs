@@ -14,7 +14,6 @@ data PreprocToken = PreprocHeader HeaderName
                   | PreprocNoneWhite
 
 -- TODO
-data Punc
 data HeaderName
 data PPNumber
 
@@ -228,6 +227,53 @@ data SCharSeq = SCharBase          SChar
 
 data SChar = SChar    Char    -- We are a bit lenient here
            | SCharEsc EscSeq
+
+
+{- PUNCTUATORS -}
+{- 6.4.6 -}
+data Punc = PuncSquareL         | PuncSquareR
+          | PuncParenL          | PuncParenR
+          | PuncBraceL          | PuncBraceR
+          | PuncDot
+          | PuncArrow
+          | PuncPlusPlus        | PuncMinMin
+          | PuncAmpersand       | PuncAsterisk
+          | PuncPlus            | PuncMin
+          | PuncTilde
+          | PuncExclamation
+          | PuncFSlash
+          | PuncPercent
+          | PuncShiftL          | PuncShiftR
+          | PuncLT              | PuncGT
+          | PuncLE              | PuncGE
+          | PuncEq
+          | PuncNEq
+          | PuncCaret
+          | PuncBar
+          | PuncDoubleAmpersand
+          | PuncDoubleBar
+          | PuncQuestion
+          | PuncColon
+          | PuncSemicolon
+          | PuncDots
+          | PuncAssign
+          | PuncAssignTimes
+          | PuncAssignDiv
+          | PuncAssignMod
+          | PuncAssignPlus
+          | PuncAssignMin
+          | PuncAssignShiftL
+          | PuncAssignShiftR
+          | PuncAssignAnd
+          | PuncAssignXOr
+          | PuncAssignOr
+          | PuncComma
+          | PuncHash
+          | PuncDoubleHash
+          | PuncDiSquareL       | PuncDiSquareR
+          | PuncDiBraceL        | PuncDiBraceR
+          | PuncDiHash
+          | PuncDiDoubleHash
 
 
 {- EXPRESSIONS -}
