@@ -524,3 +524,60 @@ data FunDef = FunDef DeclnSpecs Declr (Maybe DeclnList) CompoundStmt
 
 data DeclnList = DeclnBase           Decln
                | DeclnCons DeclnList Decln
+
+
+{- PREPROCESSING DIRECTIVES -}
+{- 6.10 -}
+data PreprocFile = PreprocFile (Maybe Group)
+
+data Group = GroupBase       GroupPart
+           | GroupCons Group GroupPart
+
+data GroupPart = GroupIf           IfSection
+               | GroupControl      ControlLine
+               | GroupText         TextLine
+               | GroupNonDirective NonDirective
+
+data IfSection
+  = IfSection IfGroup (Maybe ElifGroups) (Maybe ElseGroup) EndIfLine
+
+data IfGroup = If     ConstExpr NewLine (Maybe Group)
+             | IfDef  Ident     NewLine (Maybe Group)
+             | IfNDef Ident     NewLine (Maybe Group)
+
+data ElifGroups = ElifBase            ElifGroup
+                | ElifCons ElifGroups ElifGroup
+
+data ElifGroup = Elif ConstExpr NewLine (Maybe Group)
+
+data ElseGroup = Else NewLine (Maybe Group)
+
+data EndIfLine = EndIf NewLine
+
+data ControlLine = Include PPTokens NewLine
+                 | Define1 Ident                          ReplaceList NewLine
+                 | Define2 Ident LParen (Maybe IdentList) ReplaceList NewLine
+                 | Define3 Ident LParen                   ReplaceList NewLine
+                 | Define4 Ident LParen IdentList         ReplaceList NewLine
+                 | Undef   Ident            NewLine
+                 | Line    PPTokens         NewLine
+                 | Error   (Maybe PPTokens) NewLine
+                 | Pragma  (Maybe PPTokens) NewLine
+                 | Hash    NewLine
+
+data TextLine = TextLine (Maybe PPTokens) NewLine
+
+data NonDirective = NonDirective PPTokens NewLine
+
+data LParen = LParen
+
+data ReplaceList = ReplaceList (Maybe PPTokens)
+
+data PPTokens = PPTokensBase PreprocToken
+              | PPTokensCons PPTokens PreprocToken
+
+data NewLine = NewLine
+
+
+-- TODO
+data PreprocToken
