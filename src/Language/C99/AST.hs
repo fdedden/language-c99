@@ -1,5 +1,24 @@
 module Language.C99.AST where
 
+{- LEXICAL ELEMENTS -}
+{- 6.4 -}
+
+-- We omit Token as there is no usage to in the AST
+
+data PreprocToken = PreprocHeader HeaderName
+                  | PreprocIdent  Ident
+                  | PreprocNumber PPNumber
+                  | PreprocChar   CharConst
+                  | PreprocString StringLit
+                  | PreprocPunc   Punc
+                  | PreprocNoneWhite
+
+-- TODO
+data Punc
+data HeaderName
+data PPNumber
+
+
 {- IDENTIFIERS -}
 {- 6.4.2.1 -}
 data Ident = IdentBase IdentNonDigit
@@ -577,7 +596,3 @@ data PPTokens = PPTokensBase PreprocToken
               | PPTokensCons PPTokens PreprocToken
 
 data NewLine = NewLine
-
-
--- TODO
-data PreprocToken
