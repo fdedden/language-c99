@@ -5,10 +5,16 @@ import Language.C99.AST
 import Text.PrettyPrint
 
 
+-- Binary operator
+bin :: (Pretty a, Pretty b) => a -> Char -> b -> Doc
+bin x op y = pretty x <+> char op <+> pretty y
+
 class Pretty a where
   pretty :: a -> Doc
-  pretty = undefined -- TODO just here to compile, remove when done
 
+instance Pretty a => Pretty (Maybe a) where
+  pretty (Just x) = pretty x
+  pretty Nothing  = empty
 
 {- IDENTIFIERS -}
 {- 6.4.2.1 -}
@@ -79,11 +85,20 @@ instance Pretty HexQuad where
 {- CONSTANTS -}
 {- 6.4.4 -}
 instance Pretty Const where
+  pretty (ConstInt   ic) = pretty ic
+  pretty (ConstFloat fc) = pretty fc
+  pretty (ConstEnum  ec) = pretty ec
+  pretty (ConstChar  cc) = pretty cc
 
 {- 6.4.4.1 -}
 instance Pretty IntConst where
+  pretty (IntDec dc mis) = pretty dc <> pretty mis
+  pretty (IntOc  oc mis) = pretty oc <> pretty mis
+  pretty (IntHex hc mis) = pretty hc <> pretty mis
 
 instance Pretty DecConst where
+  pretty (DecBase    nzd) = pretty nzd
+  pretty (DecCons dc d  ) = pretty dc <> pretty d
 
 instance Pretty OcConst where
 
@@ -91,7 +106,17 @@ instance Pretty HexConst where
 
 instance Pretty HexPrefix where
 
-instance Pretty NonzeroDigit where
+instance Pretty NonZeroDigit where
+  pretty d = case d of
+    NZOne   -> int 1
+    NZTwo   -> int 2
+    NZThree -> int 3
+    NZFour  -> int 4
+    NZFive  -> int 5
+    NZSix   -> int 6
+    NZSeven -> int 7
+    NZEight -> int 8
+    NZNine  -> int 9
 
 instance Pretty OcDigit where
 
@@ -148,34 +173,76 @@ instance Pretty HexEscSeq where
 {- STRING LITERALS -}
 {- 6.4.5 -}
 instance Pretty StringLit where
+  pretty (StringLit  mcs) =             doubleQuotes (pretty mcs)
+  pretty (StringLitL mcs) = char 'L' <> doubleQuotes (pretty mcs)
 
 instance Pretty SCharSeq where
+  pretty (SCharBase sc    ) = pretty sc
+  pretty (SCharCons scs sc) = pretty scs <> pretty sc
 
 instance Pretty SChar where
+  pretty (SChar    c ) = char c
+  pretty (SCharEsc es) = pretty es
 
 
 {- EXPRESSIONS -}
 {- 6.5.1 -}
 instance Pretty PrimExpr where
+  pretty (PrimIdent  i ) = pretty i
+  pretty (PrimConst  c ) = pretty c
+  pretty (PrimString sl) = pretty sl
+  pretty (PrimExpr   e ) = parens (pretty e)
 
 {- 6.5.2 -}
 instance Pretty PostfixExpr where
+  pretty (PostfixPrim     pe     ) = pretty pe
+  pretty (PostfixIndex    pe e   ) = pretty pe <> brackets (pretty e)
+  pretty (PostfixFunction pe mael) = pretty pe <> parens (pretty mael)
+  pretty (PostfixDot      pe i   ) = pretty pe <> char '.' <> pretty i
+  pretty (PostfixArrow    pe i   ) = pretty pe <> text "->" <> pretty i
+  pretty (PostfixInc      pe     ) = pretty pe <> text "++"
+  pretty (PostfixDec      pe     ) = pretty pe <> text "--"
+  pretty (PostfixInits    tn il  ) = parens (pretty tn) <> braces (pretty il)
 
 instance Pretty ArgExprList where
+  pretty (ArgExprListBase     ae) = pretty ae
+  pretty (ArgExprListCons ael ae) = pretty ael <> comma <+> pretty ae
 
 {- 6.5.3 -}
 instance Pretty UnaryExpr where
+  pretty (UnaryPostfix  pe   ) = pretty pe
+  pretty (UnaryInc      ue   ) = text "++" <> pretty ue
+  pretty (UnaryDec      ue   ) = text "--" <> pretty ue
+  pretty (UnaryOp       op ce) = pretty op <> pretty ce
+  pretty (UnarySizeExpr ue   ) = text "sizeof" <+> pretty ue
+  pretty (UnarySizeType tn   ) = text "sizeof" <> parens (pretty tn)
 
 instance Pretty UnaryOp where
+  pretty op = case op of
+    UORef   -> char '&'
+    UODeref -> char '*'
+    UOPlus  -> char '+'
+    UOMin   -> char '-'
+    UOBNot  -> char '~'
+    UONot   -> char '!'
 
 {- 6.5.4 -}
 instance Pretty CastExpr where
+  pretty (CastUnary ue) = pretty ue
+  pretty (Cast tn ce)   = parens (pretty tn) <> pretty ce
 
 {- 6.5.5 -}
 instance Pretty MultExpr where
+  pretty (MultCast    ce) = pretty ce
+  pretty (MultMult me ce) = bin me '*' ce
+  pretty (MultDiv  me ce) = bin me '/' ce
+  pretty (MultMod  me ce) = bin me '%' ce
 
 {- 6.5.6 -}
 instance Pretty AddExpr where
+  pretty (AddMult    me) = pretty me
+  pretty (AddPlus ae me) = bin ae '+' me
+  pretty (AddMin  ae me) = bin ae '-' me
 
 {- 6.5.7 -}
 instance Pretty ShiftExpr where
