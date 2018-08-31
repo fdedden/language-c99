@@ -286,18 +286,48 @@ instance Pretty ConstExpr where
 {- DECLARATIONS -}
 {- 6.7 -}
 instance Pretty Decln where
+  pretty (Decln ds midl) = pretty ds <+> pretty midl <> semi
 
 instance Pretty DeclnSpecs where
+  pretty (DeclnSpecsStorage scs mds) = pretty scs <+> pretty mds
+  pretty (DeclnSpecsType    ts  mds) = pretty ts  <+> pretty mds
+  pretty (DeclnSpecsQual    tq  mds) = pretty tq  <+> pretty mds
+  pretty (DeclnSpecsFun     fs  mds) = pretty fs  <+> pretty mds
 
 instance Pretty InitDeclrList where
+  pretty (InitDeclrBase     id) = pretty id
+  pretty (InitDeclrCons idl id) = pretty idl <> comma <+> pretty id
 
 instance Pretty InitDeclr where
+  pretty (InitDeclr      d  ) = pretty d
+  pretty (InitDeclrInitr d i) = pretty d <+> equals <+> pretty i
 
 {- 6.7.1 -}
 instance Pretty StorageClassSpec where
+  pretty c = case c of
+    STypedef  -> text "typedef"
+    SExtern   -> text "extern"
+    SStatic   -> text "static"
+    SAuto     -> text "auto"
+    SRegister -> text "register"
 
 {- 6.7.2 -}
 instance Pretty TypeSpec where
+  pretty ty = case ty of
+    TVoid               -> text "void"
+    TChar               -> text "char"
+    TShort              -> text "short"
+    TInt                -> text "int"
+    TLong               -> text "long"
+    TFloat              -> text "float"
+    TDouble             -> text "double"
+    TSigned             -> text "signed"
+    TUnsigned           -> text "unsigned"
+    TBool               -> text "_Bool"
+    TComplex            -> text "_Complex"
+    TStructOrUnion sous -> pretty sous
+    TEnum          es   -> pretty es
+    TTypedef       tn   -> pretty tn
 
 {- 6.7.2.1 -}
 instance Pretty StructOrUnionSpec where
@@ -323,14 +353,21 @@ instance Pretty Enumr where
 
 {- 6.7.3 -}
 instance Pretty TypeQual where
+  pretty q = case q of
+    QConst    -> text "const"
+    QRestrict -> text "restrict"
+    QVolatile -> text "volatile"
 
 {- 6.7.4 -}
 instance Pretty FunSpec where
+  pretty SpecInline = text "inline"
 
 {- 6.7.5 -}
 instance Pretty Declr where
+  pretty (Declr mptr dd) = pretty mptr <+> pretty dd
 
 instance Pretty DirectDeclr where
+  pretty (DirectDeclrIdent i) = pretty i
 
 instance Pretty Ptr where
 
@@ -351,6 +388,7 @@ instance Pretty DirectAbstractDeclr where
 
 {- 6.7.7 -}
 instance Pretty TypedefName where
+  pretty (TypedefName i) = pretty i
 
 {- 6.7.8 -}
 instance Pretty Init where
