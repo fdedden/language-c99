@@ -390,7 +390,7 @@ data LOrExpr = LOrAnd         LAndExpr
 
 {- 6.5.15 -}
 data CondExpr = CondLOr LOrExpr
-              | Cond Expr CondExpr
+              | Cond    LOrExpr Expr CondExpr
 
 {- 6.5.16 -}
 data AssignExpr = AssignCond CondExpr
