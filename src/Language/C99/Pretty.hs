@@ -286,7 +286,7 @@ instance Pretty ConstExpr where
 {- DECLARATIONS -}
 {- 6.7 -}
 instance Pretty Decln where
-  pretty (Decln ds midl) = pretty ds <+> pretty midl <> semi
+  pretty (Decln ds midl) = pretty ds <+> pretty midl
 
 instance Pretty DeclnSpecs where
   pretty (DeclnSpecsStorage scs mds) = pretty scs <+> pretty mds
@@ -411,10 +411,16 @@ instance Pretty LabeledStmt where
 
 {- 6.8.2 -}
 instance Pretty CompoundStmt where
+  pretty (Compound Nothing) = empty
+  pretty (Compound mbil   ) = braces (pretty mbil)
 
 instance Pretty BlockItemList where
+  pretty (BlockItemBase     bi) = pretty bi
+  pretty (BlockItemCons bil bi) = pretty bil <> pretty bi
 
 instance Pretty BlockItem where
+  pretty (BlockItemDecln d) = pretty d <> semi
+  pretty (BlockItemStmt  s) = pretty s <> semi
 
 {- 6.8.3 -}
 instance Pretty ExprStmt where
@@ -437,5 +443,8 @@ instance Pretty ExtDecln where
 
 {- 6.9.1 -}
 instance Pretty FunDef where
+  pretty (FunDef ds d mdl cs) = pretty ds <+> pretty d <+> parens (pretty mdl) <+> pretty cs
 
 instance Pretty DeclnList where
+  pretty (DeclnBase    d) = pretty d
+  pretty (DeclnCons dl d) = pretty dl <> comma <+> pretty d
