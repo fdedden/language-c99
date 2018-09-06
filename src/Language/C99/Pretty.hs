@@ -153,6 +153,7 @@ instance Pretty FloatSuffix where
 
 {- 6.4.4.3 -}
 instance Pretty EnumConst where
+  pretty (Enum i) = pretty i
 
 {- 6.4.4.4 -}
 instance Pretty CharConst where
