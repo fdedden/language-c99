@@ -432,15 +432,23 @@ instance Pretty TypedefName where
 
 {- 6.7.8 -}
 instance Pretty Init where
+  pretty (InitExpr  ae) = pretty ae
+  pretty (InitArray il) = braces (pretty il)
 
 instance Pretty InitList where
+  pretty (InitBase    md i) =                        pretty md <+> pretty i
+  pretty (InitCons il md i) = pretty il <> comma <+> pretty md <+> pretty i
 
 instance Pretty Design where
+  pretty (Design dl) = pretty dl <+> char '='
 
 instance Pretty DesigrList where
+  pretty (DesigrBase    d) = pretty d
+  pretty (DesigrCons dl d) = pretty dl <+> pretty d
 
 instance Pretty Desigr where
-
+  pretty (DesigrConst ce) = brackets (pretty ce)
+  pretty (DesigrIdent i ) = char '.' <> pretty i
 
 {- STATEMENTS -}
 {- 6.8 -}
