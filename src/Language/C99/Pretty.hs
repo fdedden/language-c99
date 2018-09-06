@@ -445,9 +445,18 @@ instance Pretty Desigr where
 {- STATEMENTS -}
 {- 6.8 -}
 instance Pretty Stmt where
+  pretty (StmtLabeled  ls) = pretty ls
+  pretty (StmtCompound cs) = pretty cs
+  pretty (StmtExpr     es) = pretty es
+  pretty (StmtSelect   ss) = pretty ss
+  pretty (StmtIter     is) = pretty is
+  pretty (StmtJump     js) = pretty js
 
 {- 6.8.1 -}
 instance Pretty LabeledStmt where
+  pretty (LabeledIdent i  s) =                 pretty i  <> colon <+> pretty s
+  pretty (LabeledCase  ce s) = text "case" <+> pretty ce <> colon <+> pretty s
+  pretty (LabeledDefault  s) = text "default"            <> colon <+> pretty s
 
 {- 6.8.2 -}
 instance Pretty CompoundStmt where
@@ -464,15 +473,35 @@ instance Pretty BlockItem where
 
 {- 6.8.3 -}
 instance Pretty ExprStmt where
+  pretty (ExprStmt Nothing) = empty
+  pretty (ExprStmt me)      = pretty me <> semi
 
 {- 6.8.4 -}
 instance Pretty SelectStmt where
+  pretty (SelectIf c s) = text "if" <+> parens (pretty c) <+> pretty s
+  pretty (SelectIfElse c s1 s2) =
+    text "if" <+> parens (pretty c) <+> pretty s1 <+> text "else" <+> pretty s2
+  pretty (SelectSwitch c s) = text "switch" <+> parens (pretty c) <+> pretty s
 
 {- 6.8.5 -}
 instance Pretty IterStmt where
+  pretty (IterWhile c s) = text "while" <+> parens (pretty c) <+> pretty s
+  pretty (IterDo    s c) =
+    text "do" <+> pretty s <+> text "while" <+> parens (pretty c) <> semi
+  pretty (IterForUpdate me1 me2 me3 s) =
+    text "for" <+> parens ( pretty me1 <> semi <+>
+                            pretty me2 <> semi <+>
+                            pretty me3 ) <+> pretty s
+  pretty (IterFor d me1 me2 s) =
+    text "for" <+> parens ( pretty d <+> pretty me1 <> semi
+                            <+> pretty me2 ) <+> pretty s
 
 {- 6.8.6 -}
 instance Pretty JumpStmt where
+  pretty (JumpGoto i)    = text "goto" <+> pretty i <> semi
+  pretty JumpContinue    = text "continue"          <> semi
+  pretty JumpBreak       = text "break"             <> semi
+  pretty (JumpReturn me) = text "return" <+> pretty me <> semi
 
 
 {- EXTERNAL DEFINITIONS -}
