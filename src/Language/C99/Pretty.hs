@@ -515,8 +515,12 @@ instance Pretty JumpStmt where
 {- EXTERNAL DEFINITIONS -}
 {- 6.9 -}
 instance Pretty TransUnit where
+  pretty (TransUnitBase    ed) =               pretty ed
+  pretty (TransUnitCons tu ed) = pretty tu <+> pretty ed
 
 instance Pretty ExtDecln where
+  pretty (ExtFun fd)  = pretty fd
+  pretty (ExtDecln d) = pretty d
 
 {- 6.9.1 -}
 instance Pretty FunDef where
