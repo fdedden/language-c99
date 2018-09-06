@@ -560,12 +560,12 @@ data Desigr = DesigrConst ConstExpr
 
 {- STATEMENTS -}
 {- 6.8 -}
-data Stmt = StmtLabeled LabeledStmt
-          | StmtCompund CompoundStmt
-          | StmtExpr    ExprStmt
-          | StmtSelect  SelectStmt
-          | StmtIter    IterStmt
-          | StmtJump    JumpStmt
+data Stmt = StmtLabeled  LabeledStmt
+          | StmtCompound CompoundStmt
+          | StmtExpr     ExprStmt
+          | StmtSelect   SelectStmt
+          | StmtIter     IterStmt
+          | StmtJump     JumpStmt
 
 {- 6.8.1 -}
 data LabeledStmt = LabeledIdent   Ident     Stmt
