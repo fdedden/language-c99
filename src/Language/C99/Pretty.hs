@@ -6,8 +6,8 @@ import Text.PrettyPrint
 
 
 -- Binary operator
-bin :: (Pretty a, Pretty b) => a -> Char -> b -> Doc
-bin x op y = pretty x <+> char op <+> pretty y
+bin :: (Pretty a, Pretty b) => a -> String -> b -> Doc
+bin x op y = pretty x <+> text op <+> pretty y
 
 class Pretty a where
   pretty :: a -> Doc
@@ -234,53 +234,93 @@ instance Pretty CastExpr where
 {- 6.5.5 -}
 instance Pretty MultExpr where
   pretty (MultCast    ce) = pretty ce
-  pretty (MultMult me ce) = bin me '*' ce
-  pretty (MultDiv  me ce) = bin me '/' ce
-  pretty (MultMod  me ce) = bin me '%' ce
+  pretty (MultMult me ce) = bin me "*" ce
+  pretty (MultDiv  me ce) = bin me "/" ce
+  pretty (MultMod  me ce) = bin me "%" ce
 
 {- 6.5.6 -}
 instance Pretty AddExpr where
   pretty (AddMult    me) = pretty me
-  pretty (AddPlus ae me) = bin ae '+' me
-  pretty (AddMin  ae me) = bin ae '-' me
+  pretty (AddPlus ae me) = bin ae "+" me
+  pretty (AddMin  ae me) = bin ae "-" me
 
 {- 6.5.7 -}
 instance Pretty ShiftExpr where
+  pretty (ShiftAdd         add) = pretty add
+  pretty (ShiftLeft  shift add) = bin shift "<<" add
+  pretty (ShiftRight shift add) = bin shift ">>" add
 
 {- 6.5.8 -}
 instance Pretty RelExpr where
+  pretty (RelShift     shift) = pretty shift
+  pretty (RelLT    rel shift) = bin rel "<"  shift
+  pretty (RelGT    rel shift) = bin rel ">"  shift
+  pretty (RelLE    rel shift) = bin rel "<=" shift
+  pretty (RelGE    rel shift) = bin rel ">=" shift
 
 {- 6.5.9 -}
 instance Pretty EqExpr where
+  pretty (EqRel    rel) = pretty rel
+  pretty (EqEq  eq rel) = bin eq "==" rel
+  pretty (EqNEq eq rel) = bin eq "!=" rel
 
 {- 6.5.10 -}
 instance Pretty AndExpr where
+  pretty (AndEq     eq) = pretty eq
+  pretty (And   and eq) = bin and "&" eq
 
 {- 6.5.11 -}
 instance Pretty XOrExpr where
+  pretty (XOrAnd     and) = pretty and
+  pretty (XOr    xor and) = bin xor "^" and
 
 {- 6.5.12 -}
 instance Pretty OrExpr where
+  pretty (OrXOr    xor) = pretty xor
+  pretty (Or    or xor) = bin or "|" xor
 
 {- 6.5.13 -}
 instance Pretty LAndExpr where
+  pretty (LAndOr     or) = pretty or
+  pretty (LAnd   and or) = bin and "&&" or
 
 {- 6.5.14 -}
 instance Pretty LOrExpr where
+  pretty (LOrAnd    and) = pretty and
+  pretty (LOr    or and) = bin or "||" and
 
 {- 6.5.15 -}
 instance Pretty CondExpr where
+  pretty (CondLOr le     ) = pretty le
+  pretty (Cond    le e ce) = pretty le <+> char '?' <+> pretty e <+> colon <+> pretty ce
 
 {- 6.5.16 -}
 instance Pretty AssignExpr where
+  pretty (AssignCond ce)   = pretty ce
+  pretty (Assign ue op ae) = pretty ue <+> pretty op <+> pretty ae
 
 instance Pretty AssignOp where
+  pretty op = case op of
+    AEq     -> text "="
+    ATimes  -> text "*="
+    ADiv    -> text "/="
+    AMod    -> text "%="
+    AAdd    -> text "+="
+    ASub    -> text "-="
+    AShiftL -> text "<<="
+    AShiftR -> text ">>="
+    AAnd    -> text "&="
+    AXOr    -> text "^="
+    AOr     -> text "|="
 
 {- 6.5.17 -}
 instance Pretty Expr where
+  pretty (ExprAssign   ae) = pretty ae
+  pretty (Expr       e ae) = pretty e <> comma <+> pretty ae
 
 {- 6.6 -}
 instance Pretty ConstExpr where
+  pretty (Const ce) = pretty ce
 
 
 {- DECLARATIONS -}
