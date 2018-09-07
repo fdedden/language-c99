@@ -456,6 +456,7 @@ instance Pretty Desigr where
 instance Pretty Stmt where
   pretty (StmtLabeled  ls) = pretty ls
   pretty (StmtCompound cs) = pretty cs
+
   pretty (StmtExpr     es) = pretty es
   pretty (StmtSelect   ss) = pretty ss
   pretty (StmtIter     is) = pretty is
@@ -470,11 +471,11 @@ instance Pretty LabeledStmt where
 {- 6.8.2 -}
 instance Pretty CompoundStmt where
   pretty (Compound Nothing) = empty
-  pretty (Compound mbil   ) = braces (pretty mbil)
+  pretty (Compound mbil   ) = pretty mbil
 
 instance Pretty BlockItemList where
   pretty (BlockItemBase     bi) = pretty bi
-  pretty (BlockItemCons bil bi) = pretty bil <> pretty bi
+  pretty (BlockItemCons bil bi) = pretty bil $$ pretty bi
 
 instance Pretty BlockItem where
   pretty (BlockItemDecln d) = pretty d <> semi
@@ -483,7 +484,7 @@ instance Pretty BlockItem where
 {- 6.8.3 -}
 instance Pretty ExprStmt where
   pretty (ExprStmt Nothing) = empty
-  pretty (ExprStmt me)      = pretty me <> semi
+  pretty (ExprStmt me)      = pretty me
 
 {- 6.8.4 -}
 instance Pretty SelectStmt where
@@ -507,10 +508,10 @@ instance Pretty IterStmt where
 
 {- 6.8.6 -}
 instance Pretty JumpStmt where
-  pretty (JumpGoto i)    = text "goto" <+> pretty i <> semi
-  pretty JumpContinue    = text "continue"          <> semi
-  pretty JumpBreak       = text "break"             <> semi
-  pretty (JumpReturn me) = text "return" <+> pretty me <> semi
+  pretty (JumpGoto i)    = text "goto" <+> pretty i
+  pretty JumpContinue    = text "continue"
+  pretty JumpBreak       = text "break"
+  pretty (JumpReturn me) = text "return" <+> pretty me
 
 
 {- EXTERNAL DEFINITIONS -}
@@ -525,7 +526,11 @@ instance Pretty ExtDecln where
 
 {- 6.9.1 -}
 instance Pretty FunDef where
-  pretty (FunDef ds d mdl cs) = pretty ds <+> pretty d <+> parens (pretty mdl) <+> pretty cs
+  pretty (FunDef ds d mdl cs) =
+    vcat [ pretty ds <+> pretty d <+> parens (pretty mdl) <+> lbrace
+         , nest 2 $ pretty cs
+         , rbrace
+         ]
 
 instance Pretty DeclnList where
   pretty (DeclnBase    d) = pretty d
