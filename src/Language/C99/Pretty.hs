@@ -101,6 +101,8 @@ instance Pretty DecConst where
   pretty (DecCons dc d  ) = pretty dc <> pretty d
 
 instance Pretty OcConst where
+  pretty OcO            = int 0
+  pretty (OcCons oc od) = pretty oc <> pretty od
 
 instance Pretty HexConst where
 
@@ -163,8 +165,21 @@ instance Pretty CCharSeq where
 instance Pretty CChar where
 
 instance Pretty EscSeq where
+  pretty (EscSimple se) = pretty se
 
 instance Pretty SimpleEscSeq where
+  pretty esc = case esc of
+    SEQuote     -> text "\\\'"
+    SEDQuote    -> text "\\\""
+    SEQuestion  -> text "\\?"
+    SEBackSlash -> text "\\\\"
+    SEa         -> text "\\a"
+    SEb         -> text "\\b"
+    SEf         -> text "\\f"
+    SEn         -> text "\\n"
+    SEr         -> text "\\r"
+    SEt         -> text "\\t"
+    SEv         -> text "\\v"
 
 instance Pretty OcEscSeq where
 
@@ -517,8 +532,11 @@ instance Pretty JumpStmt where
 {- EXTERNAL DEFINITIONS -}
 {- 6.9 -}
 instance Pretty TransUnit where
-  pretty (TransUnitBase    ed) =               pretty ed
-  pretty (TransUnitCons tu ed) = pretty tu <+> pretty ed
+  pretty (TransUnitBase    ed) = pretty ed
+  pretty (TransUnitCons tu ed) = vcat [ pretty tu
+                                      , text ""
+                                      , pretty ed
+                                      ]
 
 instance Pretty ExtDecln where
   pretty (ExtFun fd)  = pretty fd
@@ -526,8 +544,9 @@ instance Pretty ExtDecln where
 
 {- 6.9.1 -}
 instance Pretty FunDef where
+  pretty (FunDef ds d mdl (Compound Nothing)) = fheader ds d mdl <> semi
   pretty (FunDef ds d mdl cs) =
-    vcat [ pretty ds <+> pretty d <+> parens (pretty mdl) <+> lbrace
+    vcat [ fheader ds d mdl <+> lbrace
          , nest 2 $ pretty cs
          , rbrace
          ]
@@ -535,3 +554,7 @@ instance Pretty FunDef where
 instance Pretty DeclnList where
   pretty (DeclnBase    d) = pretty d
   pretty (DeclnCons dl d) = pretty dl <> comma <+> pretty d
+
+
+fheader :: DeclnSpecs -> Declr -> Maybe DeclnList -> Doc
+fheader ds d mdl = pretty ds <+> pretty d <+> parens (pretty mdl)
