@@ -423,7 +423,14 @@ instance Pretty Declr where
   pretty (Declr mptr dd) = pretty mptr <+> pretty dd
 
 instance Pretty DirectDeclr where
-  pretty (DirectDeclrIdent i) = pretty i
+  pretty (DirectDeclrIdent  i        ) = pretty i
+  pretty (DirectDeclrDeclr  d        ) = parens $ pretty d
+  pretty (DirectDeclrArray1 d mtl mae) = pretty d <> brackets (pretty mtl <+> pretty mae)
+  pretty (DirectDeclrArray2 d mtl ae ) = pretty d <> brackets (text "static" <+> pretty mtl <+> pretty ae)
+  pretty (DirectDeclrArray3 d tl  ae ) = pretty d <> brackets (pretty tl <+> text "static" <+> pretty ae)
+  pretty (DirectDeclrArray4 d mtl    ) = pretty d <> brackets (pretty mtl <+> char '*')
+  pretty (DirectDeclrFun1   d ptl    ) = pretty d <> parens (pretty ptl)
+  pretty (DirectDeclrFun2   d mil    ) = pretty d <> parens (pretty mil)
 
 instance Pretty Ptr where
 
