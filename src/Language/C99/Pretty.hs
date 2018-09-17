@@ -521,9 +521,12 @@ instance Pretty IterStmt where
   pretty (IterDo    s c) =
     text "do" <+> pretty s <+> text "while" <+> parens (pretty c) <> semi
   pretty (IterForUpdate me1 me2 me3 s) =
-    text "for" <+> parens ( pretty me1 <> semi <+>
-                            pretty me2 <> semi <+>
-                            pretty me3 ) <+> pretty s
+    vcat [ text "for" <+> parens ( pretty me1 <> semi <+>
+                                   pretty me2 <> semi <+>
+                                   pretty me3 ) <+> lbrace
+         , nest 2 $ pretty s
+         , rbrace
+         ]
   pretty (IterFor d me1 me2 s) =
     text "for" <+> parens ( pretty d <+> pretty me1 <> semi
                             <+> pretty me2 ) <+> pretty s
