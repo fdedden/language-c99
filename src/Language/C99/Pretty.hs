@@ -125,10 +125,19 @@ instance Pretty OcDigit where
 instance Pretty HexDigit where
 
 instance Pretty IntSuffix where
+  pretty (IntSuffixUnsignedLong     u  ml) = pretty u  <> pretty ml
+  pretty (IntSuffixUnsignedLongLong u  ll) = pretty u  <> pretty ll
+  pretty (IntSuffixLong             l  mu) = pretty l  <> pretty mu
+  pretty (IntSuffixLongLong         ll mu) = pretty ll <> pretty mu
 
 instance Pretty UnsignedSuffix where
+  pretty U = char 'U'
+
 instance Pretty LongSuffix     where
+  pretty L = char 'L'
+
 instance Pretty LongLongSuffix where
+  pretty rL = text "LL"
 
 {- 6.4.4.2 -}
 instance Pretty FloatConst where
