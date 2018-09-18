@@ -3,6 +3,7 @@ module Language.C99.Pretty where
 import Language.C99.AST
 
 import Text.PrettyPrint
+import Prelude hiding ((<>))
 
 
 -- Binary operator
