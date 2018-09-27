@@ -443,6 +443,8 @@ instance Pretty DirectDeclr where
   pretty (DirectDeclrFun2   d mil    ) = pretty d <> parens (pretty mil)
 
 instance Pretty Ptr where
+  pretty (PtrBase mtql  ) = char '*' <> pretty mtql
+  pretty (PtrCons mtql p) = char '*' <> pretty mtql <> pretty p
 
 instance Pretty TypeQualList where
 
