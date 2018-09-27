@@ -397,18 +397,33 @@ instance Pretty TypeSpec where
 
 {- 6.7.2.1 -}
 instance Pretty StructOrUnionSpec where
+  pretty (StructOrUnionDecln     sou mi sdl) =
+    pretty sou <+> pretty mi <+> braces (pretty sdl)
+  pretty (StructOrUnionForwDecln sou i     ) =
+    pretty sou <+> pretty i
 
 instance Pretty StructOrUnion where
+  pretty Struct = text "struct"
+  pretty Union  = text "union"
 
 instance Pretty StructDeclnList where
+  pretty (StructDeclnBase sd    ) = pretty sd
+  pretty (StructDeclnCons sdl sd) = pretty sdl <+> pretty sd
 
 instance Pretty StructDecln where
+  pretty (StructDecln sql sdl) = pretty sql <+> pretty sdl <> char ';'
 
 instance Pretty SpecQualList where
+  pretty (SpecQualType ts msql) = pretty ts <+> pretty msql
+  pretty (SpecQualQual tq msql) = pretty tq <+> pretty msql
 
 instance Pretty StructDeclrList where
+  pretty (StructDeclrBase     sd) = pretty sd
+  pretty (StructDeclrCons sdl sd) = pretty sdl <+> char ',' <+> pretty sd
 
 instance Pretty StructDeclr where
+  pretty (StructDeclr    d    ) = pretty d
+  pretty (StructDeclrBit md ce) = pretty md <+> char ':' <+> pretty ce
 
 {- 6.7.2.2 -}
 instance Pretty EnumSpec where
