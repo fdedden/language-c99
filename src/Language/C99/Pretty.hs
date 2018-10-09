@@ -504,7 +504,7 @@ instance Pretty Desigr where
 {- 6.8 -}
 instance Pretty Stmt where
   pretty (StmtLabeled  ls) = pretty ls
-  pretty (StmtCompound cs) = pretty cs
+  pretty (StmtCompound cs) = vcat [ lbrace, nest 2 $ pretty cs, rbrace ]
 
   pretty (StmtExpr     es) = pretty es
   pretty (StmtSelect   ss) = pretty ss
