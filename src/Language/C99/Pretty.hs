@@ -398,7 +398,7 @@ instance Pretty TypeSpec where
 {- 6.7.2.1 -}
 instance Pretty StructOrUnionSpec where
   pretty (StructOrUnionDecln     sou mi sdl) =
-    pretty sou <+> pretty mi <+> braces (pretty sdl)
+    vcat [pretty sou <+> pretty mi, lbrace, nest 2 $ pretty sdl, rbrace]
   pretty (StructOrUnionForwDecln sou i     ) =
     pretty sou <+> pretty i
 
@@ -408,7 +408,7 @@ instance Pretty StructOrUnion where
 
 instance Pretty StructDeclnList where
   pretty (StructDeclnBase sd    ) = pretty sd
-  pretty (StructDeclnCons sdl sd) = pretty sdl <+> pretty sd
+  pretty (StructDeclnCons sdl sd) = pretty sdl $+$ pretty sd
 
 instance Pretty StructDecln where
   pretty (StructDecln sql sdl) = pretty sql <+> pretty sdl <> char ';'
