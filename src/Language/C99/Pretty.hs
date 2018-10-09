@@ -577,7 +577,7 @@ instance Pretty TransUnit where
 
 instance Pretty ExtDecln where
   pretty (ExtFun fd)  = pretty fd
-  pretty (ExtDecln d) = pretty d
+  pretty (ExtDecln d) = pretty d <> semi
 
 {- 6.9.1 -}
 instance Pretty FunDef where
