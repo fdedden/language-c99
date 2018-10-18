@@ -142,26 +142,48 @@ instance Pretty LongLongSuffix where
 
 {- 6.4.4.2 -}
 instance Pretty FloatConst where
+  pretty (FloatDec dfc) = pretty dfc
+  pretty (FloatHex hfc) = pretty hfc
 
 instance Pretty DecFloatConst where
+  pretty (DecFloatFrac   fc me mfs) = pretty fc <> pretty me <> pretty mfs
+  pretty (DecFloatDigits ds ep mfs) = pretty ds <> pretty ep <> pretty mfs
 
 instance Pretty HexFloatConst where
+  pretty (HexFloatFrac   hp hfc bep mfs) =
+    pretty hp <> pretty hfc <> pretty bep <> pretty mfs
+  pretty (HexFloatDigits hp hds bep mfs) =
+    pretty hp <> pretty hds <> pretty bep <> pretty mfs
 
 instance Pretty FracConst where
+  pretty (FracZero mds ds) = pretty mds <> char '.' <> pretty ds
+  pretty (Frac         ds) = pretty ds <> char '.'
 
 instance Pretty ExpPart where
+  pretty (E ms ds) = char 'e' <> pretty ms <> pretty ds
 
 instance Pretty Sign where
+  pretty SPlus  = char '+'
+  pretty SMinus = char '-'
 
 instance Pretty DigitSeq where
+  pretty (DigitBase    d) = pretty d
+  pretty (DigitCons ds d) = pretty ds <> pretty d
 
 instance Pretty HexFracConst where
+  pretty (HexFracZero mhds hds) = pretty mhds <> char '.' <> pretty hds
+  pretty (HexFrac          hds) = pretty hds <> char '.'
 
 instance Pretty BinExpPart where
+  pretty (P ms ds) = char 'p' <> pretty ms <> pretty ds
 
 instance Pretty HexDigitSeq where
+  pretty (HexDigitBase     hd) = pretty hd
+  pretty (HexDigitCons hds hd) = pretty hds <> pretty hd
 
 instance Pretty FloatSuffix where
+  pretty FF = char 'f'
+  pretty FL = char 'l'
 
 {- 6.4.4.3 -}
 instance Pretty EnumConst where
