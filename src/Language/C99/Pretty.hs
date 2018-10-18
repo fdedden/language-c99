@@ -495,6 +495,7 @@ instance Pretty IdentList where
 
 {- 6.7.6 -}
 instance Pretty TypeName where
+  pretty (TypeName sql mdar) = pretty sql <+> pretty mdar
 
 instance Pretty DirectAbstractDeclr where
 
