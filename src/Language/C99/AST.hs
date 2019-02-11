@@ -87,7 +87,7 @@ data IntConst = IntDec DecConst (Maybe IntSuffix)
 data DecConst = DecBase NonZeroDigit
               | DecCons DecConst Digit
 
-data OcConst = OcO
+data OcConst = Oc0
              | OcCons OcConst OcDigit
 
 data HexConst = HexBase HexPrefix HexDigit
