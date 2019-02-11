@@ -526,17 +526,20 @@ data IdentList = IdentListBase           Ident
                | IdentListCons IdentList Ident
 
 {- 6.7.6 -}
-data TypeName = TypeName SpecQualList (Maybe DirectAbstractDeclr)
+data TypeName = TypeName SpecQualList (Maybe AbstractDeclr)
+
+data AbstractDeclr = AbstractDeclr       Ptr
+                   | AbstractDeclrDirect (Maybe Ptr) DirectAbstractDeclr
 
 data DirectAbstractDeclr
-  = AbstractDeclr       DirectAbstractDeclr
-  | AbstractDeclrArray1
+  = DirectAbstractDeclr       AbstractDeclr
+  | DirectAbstractDeclrArray1
       (Maybe DirectAbstractDeclr) (Maybe TypeQualList) (Maybe AssignExpr)
-  | AbstractDeclrArray2
+  | DirectAbstractDeclrArray2
       (Maybe DirectAbstractDeclr) (Maybe TypeQualList) AssignExpr
-  | AbstractDeclrArray3 (Maybe DirectAbstractDeclr) TypeQualList AssignExpr
-  | AbstractDeclrArray4 (Maybe DirectAbstractDeclr)
-  | AbstractDeclrFun    (Maybe DirectAbstractDeclr) (Maybe ParamTypeList)
+  | DirectAbstractDeclrArray3 (Maybe DirectAbstractDeclr) TypeQualList AssignExpr
+  | DirectAbstractDeclrArray4 (Maybe DirectAbstractDeclr)
+  | DirectAbstractDeclrFun    (Maybe DirectAbstractDeclr) (Maybe ParamTypeList)
 
 {- 6.7.7 -}
 data TypedefName = TypedefName Ident
