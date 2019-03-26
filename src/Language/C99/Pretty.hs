@@ -637,4 +637,4 @@ instance Pretty DeclnList where
 
 
 fheader :: DeclnSpecs -> Declr -> Maybe DeclnList -> Doc
-fheader ds d mdl = pretty ds <+> pretty d <+> parens (pretty mdl)
+fheader ds d mdl = pretty ds <+> pretty d <+> pretty mdl
