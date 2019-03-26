@@ -484,12 +484,20 @@ instance Pretty Ptr where
   pretty (PtrCons mtql p) = char '*' <> pretty mtql <> pretty p
 
 instance Pretty TypeQualList where
+  pretty (TypeQualBase tq)     = pretty tq
+  pretty (TypeQualCons tql tq) = pretty tql <+> pretty tq
 
 instance Pretty ParamTypeList where
+  pretty (ParamTypeList    tq) = pretty tq
+  pretty (ParamTypeListVar tq) = pretty tq <> comma <+> text "..."
 
 instance Pretty ParamList where
+  pretty (ParamBase    pd) = pretty pd
+  pretty (ParamCons pl pd) = pretty pl <> comma <+> pretty pd
 
 instance Pretty ParamDecln where
+  pretty (ParamDecln         ds d   ) = pretty ds <+> pretty d
+  pretty (ParamDeclnAbstract ds mdad) = pretty ds <+> pretty mdad
 
 instance Pretty IdentList where
 
