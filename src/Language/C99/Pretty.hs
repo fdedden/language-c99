@@ -102,7 +102,7 @@ instance Pretty DecConst where
   pretty (DecCons dc d  ) = pretty dc <> pretty d
 
 instance Pretty OcConst where
-  pretty OcO            = int 0
+  pretty Oc0            = int 0
   pretty (OcCons oc od) = pretty oc <> pretty od
 
 instance Pretty HexConst where
