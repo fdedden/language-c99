@@ -502,6 +502,15 @@ instance Pretty AbstractDeclr where
   pretty (AbstractDeclrDirect mptr ad) = pretty mptr <> pretty ad
 
 instance Pretty DirectAbstractDeclr where
+  pretty (DirectAbstractDeclr dad) = parens $ pretty dad
+  pretty (DirectAbstractDeclrArray1 mdad mtql mae)
+    = pretty mdad <> brackets (pretty mtql <> pretty mae)
+  pretty (DirectAbstractDeclrArray2 mdad mtql ae)
+    = pretty mdad <> brackets (text "static" <+> pretty mtql <> pretty ae)
+  pretty (DirectAbstractDeclrArray3 mdad tql ae)
+    = pretty mdad <> brackets (pretty tql <+> text "static" <+> pretty ae)
+  pretty (DirectAbstractDeclrArray4 mdad) = pretty mdad <> brackets (char '*')
+  pretty (DirectAbstractDeclrFun mdad mptl) = pretty mdad <> parens (pretty mptl)
 
 {- 6.7.7 -}
 instance Pretty TypedefName where
