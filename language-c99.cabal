@@ -29,6 +29,10 @@ build-type:          Simple
 extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
+source-repository head
+  type:     git
+  location: git://github.com:fdedden/language-c99.git
+
 library
   exposed-modules:      Language.C99
                       , Language.C99.AST
