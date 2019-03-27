@@ -3,8 +3,22 @@
 
 name:                language-c99
 version:             0.1.0.0
--- synopsis:            
--- description:         
+synopsis:            An implementation of the C99 AST that strictly follows the
+                     standard.
+description:
+  This package contains an implementation of the C99 AST as described in
+  <http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf>. Sticking closely
+  to this standard assures us that the program we deal with is a valid C99
+  program.
+  .
+  Additionally the library comes with a pretty printer.
+  .
+  The package does not come with handy wrapper and utility functions to write a
+  C99 program, it just contains the bare AST. It is highly recommended to use
+  the wrapper provided by
+  <https://hackage.haskell.org/package/language-c99-simple> and
+  <https://hackage.haskell.org/package/language-c99-util> for writing programs.
+
 license:             BSD3
 license-file:        LICENSE
 author:              Frank Dedden
