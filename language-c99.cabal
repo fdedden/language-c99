@@ -15,9 +15,8 @@ description:
   .
   The package does not come with handy wrapper and utility functions to write a
   C99 program, it just contains the bare AST. It is highly recommended to use
-  the wrapper provided by
-  <https://hackage.haskell.org/package/language-c99-simple> and
-  <https://hackage.haskell.org/package/language-c99-util> for writing programs.
+  the wrapper provided by 'language-c99-simple' and 'language-c99-util' for
+  writing programs.
 
 license:             MIT
 license-file:        LICENSE
