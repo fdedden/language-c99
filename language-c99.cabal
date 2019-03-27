@@ -19,7 +19,7 @@ description:
   <https://hackage.haskell.org/package/language-c99-simple> and
   <https://hackage.haskell.org/package/language-c99-util> for writing programs.
 
-license:             BSD3
+license:             MIT
 license-file:        LICENSE
 author:              Frank Dedden
 maintainer:          Frank Dedden <dev@dedden.net>
