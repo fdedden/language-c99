@@ -603,7 +603,7 @@ instance Pretty IterStmt where
   pretty (IterDo    s c) =
     vcat [ text "do" <+> lbrace
          , pretty s <+>
-         , rbrace <+> text "while" <+> parens (pretty c) <> semi
+         , rbrace <+> text "while" <+> parens (pretty c)
          ]
   pretty (IterForUpdate me1 me2 me3 s) =
     vcat [ text "for" <+> parens ( pretty me1 <> semi <+>
