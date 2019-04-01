@@ -606,7 +606,7 @@ instance Pretty IterStmt where
     vcat [ text "for" <+> parens ( pretty me1 <> semi <+>
                                    pretty me2 <> semi <+>
                                    pretty me3 ) <+> lbrace
-         , nest 2 $ pretty s
+         , pretty s
          , rbrace
          ]
   pretty (IterFor d me1 me2 s) =
