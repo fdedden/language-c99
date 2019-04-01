@@ -601,7 +601,10 @@ instance Pretty SelectStmt where
 instance Pretty IterStmt where
   pretty (IterWhile c s) = text "while" <+> parens (pretty c) <+> pretty s
   pretty (IterDo    s c) =
-    text "do" <+> pretty s <+> text "while" <+> parens (pretty c) <> semi
+    vcat [ text "do" <+> lbrace
+         , pretty s <+>
+         , rbrace <+> text "while" <+> parens (pretty c) <> semi
+         ]
   pretty (IterForUpdate me1 me2 me3 s) =
     vcat [ text "for" <+> parens ( pretty me1 <> semi <+>
                                    pretty me2 <> semi <+>
