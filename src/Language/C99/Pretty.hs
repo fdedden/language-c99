@@ -591,7 +591,11 @@ instance Pretty SelectStmt where
          , pretty s2
          , rbrace
          ]
-  pretty (SelectSwitch c s) = text "switch" <+> parens (pretty c) <+> pretty s
+  pretty (SelectSwitch c s) =
+    vcat [ text "switch" <+> parens (pretty c) <+> lbrace
+         , pretty s
+         , rbrace
+         ]
 
 {- 6.8.5 -}
 instance Pretty IterStmt where
