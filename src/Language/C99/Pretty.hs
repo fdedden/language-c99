@@ -548,8 +548,7 @@ instance Pretty Desigr where
 {- 6.8 -}
 instance Pretty Stmt where
   pretty (StmtLabeled  ls) = pretty ls
-  pretty (StmtCompound cs) = vcat [ lbrace, nest 2 $ pretty cs, rbrace ]
-
+  pretty (StmtCompound cs) = nest 2 $ pretty cs
   pretty (StmtExpr     es) = pretty es
   pretty (StmtSelect   ss) = pretty ss
   pretty (StmtIter     is) = pretty is
@@ -581,26 +580,44 @@ instance Pretty ExprStmt where
 
 {- 6.8.4 -}
 instance Pretty SelectStmt where
-  pretty (SelectIf c s) = text "if" <+> parens (pretty c) <+> pretty s
+  pretty (SelectIf c s) = vcat [ text "if" <+> parens (pretty c) <+> lbrace
+                               , pretty s
+                               , rbrace
+                               ]
   pretty (SelectIfElse c s1 s2) =
-    text "if" <+> parens (pretty c) <+> pretty s1 <+> text "else" <+> pretty s2
-  pretty (SelectSwitch c s) = text "switch" <+> parens (pretty c) <+> pretty s
+    vcat [ text "if" <+> parens (pretty c) <+> lbrace
+         , pretty s1
+         , rbrace <+> text "else" <+> lbrace
+         , pretty s2
+         , rbrace
+         ]
+  pretty (SelectSwitch c s) =
+    vcat [ text "switch" <+> parens (pretty c) <+> lbrace
+         , pretty s
+         , rbrace
+         ]
 
 {- 6.8.5 -}
 instance Pretty IterStmt where
   pretty (IterWhile c s) = text "while" <+> parens (pretty c) <+> pretty s
   pretty (IterDo    s c) =
-    text "do" <+> pretty s <+> text "while" <+> parens (pretty c) <> semi
+    vcat [ text "do" <+> lbrace
+         , pretty s
+         , rbrace <+> text "while" <+> parens (pretty c)
+         ]
   pretty (IterForUpdate me1 me2 me3 s) =
     vcat [ text "for" <+> parens ( pretty me1 <> semi <+>
                                    pretty me2 <> semi <+>
                                    pretty me3 ) <+> lbrace
-         , nest 2 $ pretty s
+         , pretty s
          , rbrace
          ]
   pretty (IterFor d me1 me2 s) =
-    text "for" <+> parens ( pretty d <+> pretty me1 <> semi
-                            <+> pretty me2 ) <+> pretty s
+    vcat [ text "for" <+> parens ( pretty d <+> pretty me1 <> semi
+                            <+> pretty me2 ) <+> lbrace
+         , pretty s
+         , rbrace
+         ]
 
 {- 6.8.6 -}
 instance Pretty JumpStmt where
