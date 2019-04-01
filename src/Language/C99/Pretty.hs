@@ -613,8 +613,11 @@ instance Pretty IterStmt where
          , rbrace
          ]
   pretty (IterFor d me1 me2 s) =
-    text "for" <+> parens ( pretty d <+> pretty me1 <> semi
-                            <+> pretty me2 ) <+> pretty s
+    vcat [ text "for" <+> parens ( pretty d <+> pretty me1 <> semi
+                            <+> pretty me2 ) <+> lbrace
+         , pretty s
+         , rbrace
+         ]
 
 {- 6.8.6 -}
 instance Pretty JumpStmt where
