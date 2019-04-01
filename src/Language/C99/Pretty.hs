@@ -548,8 +548,7 @@ instance Pretty Desigr where
 {- 6.8 -}
 instance Pretty Stmt where
   pretty (StmtLabeled  ls) = pretty ls
-  pretty (StmtCompound cs) = vcat [ lbrace, nest 2 $ pretty cs, rbrace ]
-
+  pretty (StmtCompound cs) = nest 2 $ pretty cs
   pretty (StmtExpr     es) = pretty es
   pretty (StmtSelect   ss) = pretty ss
   pretty (StmtIter     is) = pretty is
@@ -581,14 +580,16 @@ instance Pretty ExprStmt where
 
 {- 6.8.4 -}
 instance Pretty SelectStmt where
-  pretty (SelectIf c s) = vcat [ text "if" <+> parens (pretty c)
+  pretty (SelectIf c s) = vcat [ text "if" <+> parens (pretty c) <+> lbrace
                                , pretty s
+                               , rbrace
                                ]
   pretty (SelectIfElse c s1 s2) =
-    vcat [ text "if" <+> parens (pretty c)
+    vcat [ text "if" <+> parens (pretty c) <+> lbrace
          , pretty s1
-         , text "else"
+         , rbrace <+> text "else" <+> lbrace
          , pretty s2
+         , rbrace
          ]
   pretty (SelectSwitch c s) = text "switch" <+> parens (pretty c) <+> pretty s
 
