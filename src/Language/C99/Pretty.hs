@@ -581,9 +581,15 @@ instance Pretty ExprStmt where
 
 {- 6.8.4 -}
 instance Pretty SelectStmt where
-  pretty (SelectIf c s) = text "if" <+> parens (pretty c) <+> pretty s
+  pretty (SelectIf c s) = vcat [ text "if" <+> parens (pretty c)
+                               , pretty s
+                               ]
   pretty (SelectIfElse c s1 s2) =
-    text "if" <+> parens (pretty c) <+> pretty s1 <+> text "else" <+> pretty s2
+    vcat [ text "if" <+> parens (pretty c)
+         , pretty s1
+         , text "else"
+         , pretty s2
+         ]
   pretty (SelectSwitch c s) = text "switch" <+> parens (pretty c) <+> pretty s
 
 {- 6.8.5 -}
