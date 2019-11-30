@@ -630,10 +630,12 @@ instance Pretty JumpStmt where
 {- EXTERNAL DEFINITIONS -}
 {- 6.9 -}
 instance Pretty TransUnit where
-  pretty (TransUnitBase    ed) = pretty ed
-  pretty (TransUnitCons tu ed) = case ed of
-    ExtFun _ -> vcat [pretty tu, text "", pretty ed]
-    _        -> vcat [pretty tu, pretty ed]
+  pretty tu = vcat [pretty' tu, text ""]
+    where
+      pretty' (TransUnitBase    ed) = pretty ed
+      pretty' (TransUnitCons tu ed) = case ed of
+        ExtFun _ -> vcat [pretty' tu, text "", pretty ed]
+        _        -> vcat [pretty' tu, pretty ed]
 
 instance Pretty ExtDecln where
   pretty (ExtFun fd)  = pretty fd
