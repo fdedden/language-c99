@@ -449,10 +449,16 @@ instance Pretty StructDeclr where
 
 {- 6.7.2.2 -}
 instance Pretty EnumSpec where
+  pretty (EnumSpec mident enumrlist) = text "enum" <+> pretty mident <+> braces (pretty enumrlist)
+  pretty (EnumSpecForw ident)        = text "enum" <+> pretty ident
 
 instance Pretty EnumrList where
+  pretty (EnumrBase enumr)    = pretty enumr
+  pretty (EnumrCons el enumr) = pretty el <+> char ',' <+> pretty enumr
 
 instance Pretty Enumr where
+  pretty (Enumr (Enum ident))          = pretty ident
+  pretty (EnumrInit (Enum ident) expr) = pretty ident <+> char '=' <+> pretty expr
 
 {- 6.7.3 -}
 instance Pretty TypeQual where
