@@ -106,8 +106,11 @@ instance Pretty OcConst where
   pretty (OcCons oc od) = pretty oc <> pretty od
 
 instance Pretty HexConst where
+  pretty (HexBase prefix digit) = pretty prefix <> pretty digit
+  pretty (HexCons hexes digit)  = pretty hexes <> pretty digit
 
 instance Pretty HexPrefix where
+  pretty OX = text "0x"
 
 instance Pretty NonZeroDigit where
   pretty d = case d of
@@ -124,6 +127,22 @@ instance Pretty NonZeroDigit where
 instance Pretty OcDigit where
 
 instance Pretty HexDigit where
+  pretty HexZero = text "0"
+  pretty HexOne = text "1"
+  pretty HexTwo = text "2"
+  pretty HexThree = text "3"
+  pretty HexFour = text "4"
+  pretty HexFive = text "5"
+  pretty HexSix = text "6"
+  pretty HexSeven = text "7"
+  pretty HexEight = text "8"
+  pretty HexNine = text "9"
+  pretty HexA = text "A"
+  pretty HexB = text "B"
+  pretty HexC = text "C"
+  pretty HexD = text "D"
+  pretty HexE = text "E"
+  pretty HexF = text "F"
 
 instance Pretty IntSuffix where
   pretty (IntSuffixUnsignedLong     u  ml) = pretty u  <> pretty ml
