@@ -106,8 +106,11 @@ instance Pretty OcConst where
   pretty (OcCons oc od) = pretty oc <> pretty od
 
 instance Pretty HexConst where
+  pretty (HexBase prefix digit) = pretty prefix <> pretty digit
+  pretty (HexCons hexes digit)  = pretty hexes <> pretty digit
 
 instance Pretty HexPrefix where
+  pretty OX = text "0x"
 
 instance Pretty NonZeroDigit where
   pretty d = case d of
@@ -122,8 +125,33 @@ instance Pretty NonZeroDigit where
     NZNine  -> int 9
 
 instance Pretty OcDigit where
+  pretty d = case d of
+    OcZero  -> text "0"
+    OcOne   -> text "1"
+    OcTwo   -> text "2"
+    OcThree -> text "3"
+    OcFour  -> text "4"
+    OcFive  -> text "5"
+    OcSix   -> text "6"
+    OcSeven -> text "7"
 
 instance Pretty HexDigit where
+  pretty HexZero  = text "0"
+  pretty HexOne   = text "1"
+  pretty HexTwo   = text "2"
+  pretty HexThree = text "3"
+  pretty HexFour  = text "4"
+  pretty HexFive  = text "5"
+  pretty HexSix   = text "6"
+  pretty HexSeven = text "7"
+  pretty HexEight = text "8"
+  pretty HexNine  = text "9"
+  pretty HexA     = text "A"
+  pretty HexB     = text "B"
+  pretty HexC     = text "C"
+  pretty HexD     = text "D"
+  pretty HexE     = text "E"
+  pretty HexF     = text "F"
 
 instance Pretty IntSuffix where
   pretty (IntSuffixUnsignedLong     u  ml) = pretty u  <> pretty ml
@@ -191,10 +219,16 @@ instance Pretty EnumConst where
 
 {- 6.4.4.4 -}
 instance Pretty CharConst where
+  pretty (Char charSeq)  = quotes (pretty charSeq)
+  pretty (CharL charSeq) = char 'L' <> quotes (pretty charSeq)
 
 instance Pretty CCharSeq where
+  pretty (CCharBase cchar)      = pretty cchar
+  pretty (CCharCons cseq cchar) = pretty cseq <> pretty cchar
 
 instance Pretty CChar where
+  pretty (CChar ch)        = char ch
+  pretty (CCharEsc escSeq) = pretty escSeq
 
 instance Pretty EscSeq where
   pretty (EscSimple se) = pretty se
@@ -214,9 +248,13 @@ instance Pretty SimpleEscSeq where
     SEv         -> text "\\v"
 
 instance Pretty OcEscSeq where
+  pretty (OcEsc1 od) = char '\\' <> pretty od
+  pretty (OcEsc2 od1 od2) = char '\\' <> pretty od1 <> pretty od2
+  pretty (OcEsc3 od1 od2 od3) = char '\\' <> pretty od1 <> pretty od2 <> pretty od3
 
 instance Pretty HexEscSeq where
-
+  pretty (HexEscBase hd) = text "\\x" <> pretty hd
+  pretty (HexEscCons hs hd) = pretty hs <> pretty hd
 
 {- STRING LITERALS -}
 {- 6.4.5 -}
@@ -506,6 +544,8 @@ instance Pretty ParamDecln where
   pretty (ParamDeclnAbstract ds mdad) = pretty ds <+> pretty mdad
 
 instance Pretty IdentList where
+  pretty (IdentListBase ident) = pretty ident
+  pretty (IdentListCons idl ident) = pretty idl <> comma <+> pretty ident
 
 {- 6.7.6 -}
 instance Pretty TypeName where
@@ -554,7 +594,7 @@ instance Pretty Desigr where
 {- 6.8 -}
 instance Pretty Stmt where
   pretty (StmtLabeled  ls) = pretty ls
-  pretty (StmtCompound cs) = nest 2 $ pretty cs
+  pretty (StmtCompound cs) = nest 2 $ braces (pretty cs)
   pretty (StmtExpr     es) = pretty es
   pretty (StmtSelect   ss) = pretty ss
   pretty (StmtIter     is) = pretty is
