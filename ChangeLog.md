@@ -1,5 +1,11 @@
 # Revision history for language-c99
 
+## 0.1.3 -- 2021-09-13
+
+* Fixed a bug where I and J where swapped in the pretty printer. (Thanks to
+  Benjamin Selfridge)
+* Extended the prettyprinter. (Thanks to Alexander Vieth)
+
 ## 0.1.2 -- 2019-11-30
 
 * Added newline to the end of translation units.
