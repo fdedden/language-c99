@@ -545,9 +545,9 @@ data DirectAbstractDeclr
 data TypedefName = TypedefName Ident
 
 {- 6.7.8 -}
-data Init = InitExpr  AssignExpr
-          | InitArray InitList
-          -- We omit the specific case of InitArray ending with ,
+data Init = InitExpr AssignExpr
+          | InitList InitList
+          -- We omit the specific case of InitList ending with ,
 
 data InitList = InitBase          (Maybe Design) Init
               | InitCons InitList (Maybe Design) Init

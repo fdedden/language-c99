@@ -572,8 +572,8 @@ instance Pretty TypedefName where
 
 {- 6.7.8 -}
 instance Pretty Init where
-  pretty (InitExpr  ae) = pretty ae
-  pretty (InitArray il) = braces (pretty il)
+  pretty (InitExpr ae) = pretty ae
+  pretty (InitList il) = braces (pretty il)
 
 instance Pretty InitList where
   pretty (InitBase    md i) =                        pretty md <+> pretty i
