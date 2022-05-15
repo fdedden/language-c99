@@ -1,5 +1,9 @@
 # Revision history for language-c99
 
+## ... -- 2022-05-15
+
+* Renamed InitArray to InitList.
+
 ## 0.1.3 -- 2021-09-13
 
 * Fixed a bug where I and J where swapped in the pretty printer. (Thanks to
