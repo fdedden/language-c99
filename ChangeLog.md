@@ -1,6 +1,6 @@
 # Revision history for language-c99
 
-## ... -- 2022-05-15
+## 0.2.0 -- 2022-05-21
 
 * Renamed InitArray to InitList.
 
